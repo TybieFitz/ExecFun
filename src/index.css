@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #141820;
+  --color-surface-raised: #1c2330;
+  --color-border: #2a3344;
+  --color-text: #e8ecf4;
+  --color-text-muted: #9aa5b8;
+  --color-accent: #6b8fbd;
+  --color-accent-hover: #7fa3cf;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.screen-enter {
+  animation: fade-in 0.35s ease-out forwards;
+}
