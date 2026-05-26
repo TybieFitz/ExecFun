@@ -14,20 +14,28 @@ export function ScreenLayout({
   align = "center",
 }: ScreenLayoutProps) {
   return (
-    <div className="screen-enter flex min-h-full flex-col px-6 py-10 sm:px-8">
-      <header className="mb-10">
+    <div className="screen-enter flex h-[100dvh] flex-col overflow-hidden px-6 pt-8 sm:px-8">
+      <header className="mb-6 shrink-0">
         <h1 className="text-2xl font-medium leading-snug tracking-tight text-text sm:text-3xl">
           {title}
         </h1>
       </header>
 
       <main
-        className={`flex flex-1 flex-col ${align === "start" ? "justify-start" : "justify-center"}`}
+        className={`min-h-0 flex-1 overflow-y-auto pb-4 ${
+          align === "start"
+            ? "flex flex-col justify-start"
+            : "flex flex-col justify-end"
+        }`}
       >
         {children}
       </main>
 
-      {footer && <footer className="mt-12 pt-4">{footer}</footer>}
+      {footer && (
+        <footer className="-mx-6 shrink-0 border-t border-border bg-background/95 px-6 pt-4 pb-10 backdrop-blur sm:-mx-8 sm:px-8">
+          {footer}
+        </footer>
+      )}
     </div>
   );
 }

@@ -360,6 +360,8 @@ export default function App() {
 
           title={playlist[taskIndex]?.label ?? ""}
 
+          taskId={playlist[taskIndex]?.taskId ?? "laundry"}
+
           onDone={() =>
 
             setCompletedTasks((prev) => new Set(prev).add(taskIndex))
