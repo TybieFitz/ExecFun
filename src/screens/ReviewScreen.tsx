@@ -4,10 +4,23 @@ import type { PlaylistItem } from "../types";
 
 type ReviewScreenProps = {
   items: PlaylistItem[];
+  completedTasks: Set<number>;
+  skippedTasks: Set<number>;
   onReturnToMainMenu: () => void;
 };
 
-export function ReviewScreen({ items, onReturnToMainMenu }: ReviewScreenProps) {
+function rowStatus(index: number, completed: Set<number>, skipped: Set<number>) {
+  if (completed.has(index)) return "completed";
+  if (skipped.has(index)) return "skipped";
+  return "default";
+}
+
+export function ReviewScreen({
+  items,
+  completedTasks,
+  skippedTasks,
+  onReturnToMainMenu,
+}: ReviewScreenProps) {
   return (
     <ScreenLayout
       title="Review"
@@ -23,14 +36,30 @@ export function ReviewScreen({ items, onReturnToMainMenu }: ReviewScreenProps) {
         <p className="text-lg text-text-muted">No tasks selected.</p>
       ) : (
         <ol className="flex flex-col gap-3">
-          {items.map((item, index) => (
-            <li
-              key={`${item.taskId}-${index}`}
-              className="rounded-xl border border-border bg-surface-raised px-5 py-4 text-lg text-text"
-            >
-              {item.label}
-            </li>
-          ))}
+          {items.map((item, index) => {
+            const status = rowStatus(index, completedTasks, skippedTasks);
+
+            return (
+              <li
+                key={`${item.taskId}-${index}`}
+                className={`flex items-center gap-4 rounded-xl border px-5 py-4 text-lg ${
+                  status === "completed"
+                    ? "border-emerald-800/50 bg-emerald-950/25 text-emerald-100"
+                    : status === "skipped"
+                      ? "border-border bg-surface-raised text-text-muted opacity-60 grayscale"
+                      : "border-border bg-surface-raised text-text"
+                }`}
+              >
+                <span
+                  className="w-8 shrink-0 text-center text-xl leading-none"
+                  aria-hidden="true"
+                >
+                  {status === "completed" ? "✔" : status === "skipped" ? "—" : ""}
+                </span>
+                <span className="min-w-0 flex-1 text-left">{item.label}</span>
+              </li>
+            );
+          })}
         </ol>
       )}
     </ScreenLayout>

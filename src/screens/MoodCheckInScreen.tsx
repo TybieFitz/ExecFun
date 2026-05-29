@@ -15,6 +15,7 @@ export function MoodCheckInScreen({
   return (
     <CheckInScreen
       title="How is your mood right now?"
+      step={2}
       value={value}
       onChange={onChange}
       description={MOOD_DESCRIPTIONS[value]}

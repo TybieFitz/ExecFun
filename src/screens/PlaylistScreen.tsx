@@ -28,16 +28,24 @@ export function PlaylistScreen({ items, onBack, onStart }: PlaylistScreenProps) 
       {items.length === 0 ? (
         <p className="text-lg text-text-muted">No tasks selected.</p>
       ) : (
-        <ol className="flex flex-col gap-3">
+        <ul className="flex flex-col divide-y divide-border/50">
           {items.map((item, index) => (
             <li
               key={`${item.taskId}-${index}`}
-              className="rounded-xl border border-border bg-surface-raised px-5 py-4 text-lg text-text"
+              className="flex items-baseline gap-4 py-3.5 first:pt-0 last:pb-0"
             >
-              {item.label}
+              <span
+                className="w-6 shrink-0 text-center text-sm text-text-muted"
+                aria-hidden="true"
+              >
+                •
+              </span>
+              <span className="min-w-0 flex-1 text-left text-lg text-text">
+                {item.label}
+              </span>
             </li>
           ))}
-        </ol>
+        </ul>
       )}
     </ScreenLayout>
   );

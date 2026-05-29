@@ -284,6 +284,10 @@ export default function App() {
 
           items={playlist}
 
+          completedTasks={completedTasks}
+
+          skippedTasks={skippedTasks}
+
           onReturnToMainMenu={resetSession}
 
         />

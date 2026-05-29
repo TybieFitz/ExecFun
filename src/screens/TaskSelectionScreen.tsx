@@ -22,7 +22,7 @@ export function TaskSelectionScreen({
   return (
     <ScreenLayout
       title="Choose tasks"
-      align="start"
+      align="center"
       footer={<PrimaryButton label="Next" onClick={onNext} />}
     >
       <div className="flex flex-col gap-3">
