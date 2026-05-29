@@ -9,6 +9,7 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
   return (
     <ScreenLayout
       title="Adaptive Task Companion"
+      showExit={false}
       footer={<PrimaryButton label="Start Day" onClick={onStart} />}
     >
       <p className="max-w-md text-lg leading-relaxed text-text-muted">

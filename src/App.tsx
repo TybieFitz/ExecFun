@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 import { AppShell } from "./components/AppShell";
+import { ExitConfirmationDialog } from "./components/ExitConfirmationDialog";
+import { ExitProvider } from "./context/ExitContext";
 
 import { buildPlaylist } from "./lib/buildPlaylist";
 
@@ -91,6 +93,8 @@ export default function App() {
     useState<BioBreakChecks>(initialBioBreakChecks);
 
   const [checkInAfterBreak, setCheckInAfterBreak] = useState(false);
+
+  const [exitDialogOpen, setExitDialogOpen] = useState(false);
 
 
 
@@ -418,8 +422,20 @@ export default function App() {
 
 
 
-  return <AppShell>{content}</AppShell>;
-
+  return (
+    <ExitProvider onRequestExit={() => setExitDialogOpen(true)}>
+      <AppShell>{content}</AppShell>
+      {exitDialogOpen && (
+        <ExitConfirmationDialog
+          onCancel={() => setExitDialogOpen(false)}
+          onReset={() => {
+            setExitDialogOpen(false);
+            resetSession();
+          }}
+        />
+      )}
+    </ExitProvider>
+  );
 }
 
 

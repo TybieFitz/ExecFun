@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useRequestExit } from "../context/ExitContext";
 
 type ScreenLayoutProps = {
   title: string;
@@ -7,6 +8,8 @@ type ScreenLayoutProps = {
   align?: "center" | "start";
   /** Merged onto the root container (e.g. transient screen tones). */
   rootClassName?: string;
+  /** Show upper-right exit control. Default true; false on Welcome. */
+  showExit?: boolean;
 };
 
 export function ScreenLayout({
@@ -15,15 +18,30 @@ export function ScreenLayout({
   footer,
   align = "center",
   rootClassName = "",
+  showExit = true,
 }: ScreenLayoutProps) {
+  const requestExit = useRequestExit();
+
   return (
     <div
       className={`screen-enter flex h-[100dvh] flex-col overflow-hidden px-6 pt-8 sm:px-8 ${rootClassName}`}
     >
       <header className="mb-6 shrink-0">
-        <h1 className="text-2xl font-medium leading-snug tracking-tight text-text sm:text-3xl">
-          {title}
-        </h1>
+        <div className="flex items-start justify-between gap-3">
+          <h1 className="min-w-0 flex-1 text-2xl font-medium leading-snug tracking-tight text-text sm:text-3xl">
+            {title}
+          </h1>
+          {showExit && requestExit && (
+            <button
+              type="button"
+              aria-label="Exit"
+              onClick={requestExit}
+              className="-mr-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-lg leading-none text-text-muted transition-colors hover:bg-surface-raised hover:text-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              ×
+            </button>
+          )}
+        </div>
       </header>
 
       <main
