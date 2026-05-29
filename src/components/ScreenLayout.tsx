@@ -7,8 +7,6 @@ type ScreenLayoutProps = {
   align?: "center" | "start";
   /** Merged onto the root container (e.g. transient screen tones). */
   rootClassName?: string;
-  /** Optional content below the title (e.g. check-in progress). */
-  headerBelow?: ReactNode;
 };
 
 export function ScreenLayout({
@@ -17,7 +15,6 @@ export function ScreenLayout({
   footer,
   align = "center",
   rootClassName = "",
-  headerBelow,
 }: ScreenLayoutProps) {
   return (
     <div
@@ -27,7 +24,6 @@ export function ScreenLayout({
         <h1 className="text-2xl font-medium leading-snug tracking-tight text-text sm:text-3xl">
           {title}
         </h1>
-        {headerBelow}
       </header>
 
       <main

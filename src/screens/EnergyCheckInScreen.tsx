@@ -15,7 +15,6 @@ export function EnergyCheckInScreen({
   return (
     <CheckInScreen
       title="How is your energy right now?"
-      step={3}
       value={value}
       onChange={onChange}
       description={ENERGY_DESCRIPTIONS[value]}

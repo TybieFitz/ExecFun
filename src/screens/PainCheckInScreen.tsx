@@ -15,7 +15,6 @@ export function PainCheckInScreen({
   return (
     <CheckInScreen
       title="How is your pain right now?"
-      step={1}
       value={value}
       onChange={onChange}
       description={PAIN_DESCRIPTIONS[value]}
