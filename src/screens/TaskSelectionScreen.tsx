@@ -19,11 +19,19 @@ export function TaskSelectionScreen({
   onChange,
   onNext,
 }: TaskSelectionScreenProps) {
+  const hasSelectedTasks = TASK_IDS.some((id) => quantities[id] > 0);
+
   return (
     <ScreenLayout
       title="Choose tasks"
       align="center"
-      footer={<PrimaryButton label="Next" onClick={onNext} />}
+      footer={
+        <PrimaryButton
+          label="Next"
+          onClick={onNext}
+          disabled={!hasSelectedTasks}
+        />
+      }
     >
       <div className="flex flex-col gap-3">
         {TASK_IDS.map((id) => (

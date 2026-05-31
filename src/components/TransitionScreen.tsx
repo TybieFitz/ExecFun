@@ -5,13 +5,18 @@ import { TRANSITION_MS } from "../lib/transition";
 type TransitionScreenProps = {
   message: string;
   onComplete: () => void;
+  durationMs?: number;
 };
 
-export function TransitionScreen({ message, onComplete }: TransitionScreenProps) {
+export function TransitionScreen({
+  message,
+  onComplete,
+  durationMs = TRANSITION_MS,
+}: TransitionScreenProps) {
   useEffect(() => {
-    const id = window.setTimeout(onComplete, TRANSITION_MS);
+    const id = window.setTimeout(onComplete, durationMs);
     return () => window.clearTimeout(id);
-  }, [onComplete]);
+  }, [onComplete, durationMs]);
 
   return (
     <ScreenLayout title=" " align="start">

@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
+import { useWakeLock } from "./hooks/useWakeLock";
 import { AppShell } from "./components/AppShell";
 import { ExitConfirmationDialog } from "./components/ExitConfirmationDialog";
 import { ExitProvider } from "./context/ExitContext";
+import { AGENDA_COMPLETE_TRANSITION_MS } from "./lib/transition";
 import { TransitionScreen } from "./components/TransitionScreen";
 import { buildPlaylist } from "./lib/buildPlaylist";
 import { findNextTaskIndex } from "./lib/findNextTaskIndex";
@@ -15,6 +17,8 @@ import { TaskSelectionScreen } from "./screens/TaskSelectionScreen";
 import { WelcomeScreen } from "./screens/WelcomeScreen";
 
 export default function App() {
+  useWakeLock();
+
   const [screen, setScreen] = useState<Screen>("welcome");
   const [tasks, setTasks] = useState<TaskQuantities>(initialTaskQuantities);
   const [playlist, setPlaylist] = useState<PlaylistItem[]>([]);
@@ -79,6 +83,7 @@ export default function App() {
       content = (
         <TransitionScreen
           message="Agenda complete"
+          durationMs={AGENDA_COMPLETE_TRANSITION_MS}
           onComplete={() => goTo("review")}
         />
       );
