@@ -7,9 +7,8 @@ import {
   TASK_CHECKLISTS,
   initialChecklistState,
 } from "../data/taskChecklists";
+import { TRANSITION_MS } from "../lib/transition";
 import type { TaskId } from "../types";
-
-const TRANSITION_MS = 800;
 
 type TaskScreenProps = {
   title: string;
@@ -68,7 +67,7 @@ export function TaskScreen({
     >
       {message ? (
         <div className="flex flex-1 items-center justify-center">
-          <p className="text-center text-2xl text-text-muted sm:text-3xl">
+          <p className="w-full text-center text-2xl text-text-muted sm:text-3xl">
             {message}
           </p>
         </div>

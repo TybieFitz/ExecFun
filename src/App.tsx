@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AppShell } from "./components/AppShell";
 import { ExitConfirmationDialog } from "./components/ExitConfirmationDialog";
 import { ExitProvider } from "./context/ExitContext";
+import { TransitionScreen } from "./components/TransitionScreen";
 import { buildPlaylist } from "./lib/buildPlaylist";
 import { findNextTaskIndex } from "./lib/findNextTaskIndex";
 import type { PlaylistItem, Screen, TaskId, TaskQuantities } from "./types";
 import { initialTaskQuantities } from "./types";
-import { AgendaCompleteScreen } from "./screens/AgendaCompleteScreen";
 import { CheckInScreen } from "./screens/CheckInScreen";
 import { PlaylistScreen } from "./screens/PlaylistScreen";
 import { ReviewScreen } from "./screens/ReviewScreen";
@@ -25,8 +25,22 @@ export default function App() {
   const [skippedTasks, setSkippedTasks] = useState<Set<number>>(() => new Set());
   const [exitDialogOpen, setExitDialogOpen] = useState(false);
 
+  const completedTasksRef = useRef(completedTasks);
+  const skippedTasksRef = useRef(skippedTasks);
+  completedTasksRef.current = completedTasks;
+  skippedTasksRef.current = skippedTasks;
+
   function goTo(next: Screen) {
     setScreen(next);
+  }
+
+  function handleTaskComplete() {
+    const next = findNextTaskIndex(
+      playlist.length,
+      completedTasksRef.current,
+      skippedTasksRef.current,
+    );
+    goTo(next === null ? "agendaComplete" : "checkIn");
   }
 
   function startNextTask() {
@@ -63,7 +77,10 @@ export default function App() {
       break;
     case "agendaComplete":
       content = (
-        <AgendaCompleteScreen onReview={() => goTo("review")} />
+        <TransitionScreen
+          message="Agenda complete"
+          onComplete={() => goTo("review")}
+        />
       );
       break;
     case "review":
@@ -112,7 +129,7 @@ export default function App() {
           onSkip={() =>
             setSkippedTasks((prev) => new Set(prev).add(taskIndex))
           }
-          onComplete={() => goTo("checkIn")}
+          onComplete={handleTaskComplete}
         />
       );
       break;

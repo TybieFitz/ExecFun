@@ -45,10 +45,8 @@ export function ScreenLayout({
       </header>
 
       <main
-        className={`min-h-0 flex-1 overflow-y-auto pb-4 ${
-          align === "start"
-            ? "flex flex-col justify-start"
-            : "flex flex-col justify-end"
+        className={`min-h-0 flex-1 overflow-y-auto pb-4 flex flex-col items-stretch ${
+          align === "start" ? "justify-start" : "justify-end"
         }`}
       >
         {children}

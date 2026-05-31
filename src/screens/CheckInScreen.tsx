@@ -1,4 +1,4 @@
-import checkInImage from "../assets/check-in.png";
+import { checkInImage } from "../lib/checkInImage";
 import { PrimaryButton } from "../components/PrimaryButton";
 import { ScreenLayout } from "../components/ScreenLayout";
 
@@ -15,11 +15,13 @@ export function CheckInScreen({ onStartNextTask }: CheckInScreenProps) {
         <PrimaryButton label="Start Next Task" onClick={onStartNextTask} />
       }
     >
-      <img
-        src={checkInImage}
-        alt="Check-in reminder"
-        className="mx-auto w-full max-w-md object-contain"
-      />
+      <div className="mx-auto flex w-full max-w-md min-h-[min(50vh,28rem)] items-center justify-center">
+        <img
+          src={checkInImage}
+          alt="Check-in reminder"
+          className="w-full object-contain"
+        />
+      </div>
     </ScreenLayout>
   );
 }
