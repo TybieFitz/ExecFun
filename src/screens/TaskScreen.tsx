@@ -47,7 +47,7 @@ export function TaskScreen({
         <SecondaryButton label="Skip" onClick={() => setSkipConfirming(true)} />
         <PrimaryButton
           label="Done"
-          onClick={() => finish(onDone, "Completed.")}
+          onClick={() => finish(onDone, "Complete")}
         />
       </div>
     );
@@ -74,7 +74,7 @@ export function TaskScreen({
       ) : skipConfirming ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-10 px-2">
           <p className="max-w-sm text-center text-xl leading-relaxed text-text/90 sm:text-2xl">
-            Skip this task?
+            Skip task?
           </p>
           <div className="flex w-full max-w-sm flex-col gap-3">
             <SecondaryButton
@@ -83,10 +83,10 @@ export function TaskScreen({
             />
             <button
               type="button"
-              onClick={() => finish(onSkip, "Event skipped")}
+              onClick={() => finish(onSkip, "Skipped")}
               className="w-full rounded-xl border border-stone-500/35 bg-stone-950/40 px-6 py-4 text-lg font-medium text-stone-200 transition-colors duration-200 hover:border-stone-400/40 hover:bg-stone-950/55 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-500/60"
             >
-              Skip Task
+              Skip
             </button>
           </div>
         </div>

@@ -12,6 +12,10 @@ type ScreenLayoutProps = {
   showExit?: boolean;
   /** Vertically center header + main together (Welcome only). */
   centerHeaderAndContent?: boolean;
+  /** Optional override for title typography (Welcome only). */
+  titleClassName?: string;
+  /** Vertically center main content above the footer (task menu). */
+  centerMainContent?: boolean;
 };
 
 export function ScreenLayout({
@@ -22,6 +26,8 @@ export function ScreenLayout({
   rootClassName = "",
   showExit = true,
   centerHeaderAndContent = false,
+  titleClassName = "",
+  centerMainContent = false,
 }: ScreenLayoutProps) {
   const requestExit = useRequestExit();
 
@@ -40,7 +46,7 @@ export function ScreenLayout({
       <h1
         className={`text-center text-2xl font-medium leading-snug tracking-tight text-text sm:text-3xl ${
           showExit && requestExit ? "px-10" : ""
-        }`}
+        } ${titleClassName}`}
       >
         {title}
       </h1>
@@ -52,9 +58,11 @@ export function ScreenLayout({
       className={`flex flex-col items-stretch pb-4 ${
         centerHeaderAndContent
           ? "shrink-0"
-          : `min-h-0 flex-1 overflow-y-auto ${
-              align === "start" ? "justify-start" : "justify-end"
-            }`
+          : centerMainContent
+            ? "min-h-0 flex-1 overflow-y-auto justify-center"
+            : `min-h-0 flex-1 overflow-y-auto ${
+                align === "start" ? "justify-start" : "justify-end"
+              }`
       }`}
     >
       {children}

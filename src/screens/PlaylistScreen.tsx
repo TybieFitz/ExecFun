@@ -12,7 +12,7 @@ type PlaylistScreenProps = {
 export function PlaylistScreen({ items, onBack, onStart }: PlaylistScreenProps) {
   return (
     <ScreenLayout
-      title="Playlist"
+      title="Agenda Preview"
       align="start"
       footer={
         <div className="flex flex-col gap-3">

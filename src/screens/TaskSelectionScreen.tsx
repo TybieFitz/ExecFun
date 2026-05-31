@@ -23,8 +23,8 @@ export function TaskSelectionScreen({
 
   return (
     <ScreenLayout
-      title="Choose tasks"
-      align="center"
+      title="Create Agenda"
+      centerMainContent
       footer={
         <PrimaryButton
           label="Next"

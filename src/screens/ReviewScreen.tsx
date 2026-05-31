@@ -23,7 +23,7 @@ export function ReviewScreen({
 }: ReviewScreenProps) {
   return (
     <ScreenLayout
-      title="Review"
+      title="Agenda Review"
       align="start"
       footer={
         <PrimaryButton
