@@ -13,6 +13,8 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
       showExit={false}
       centerHeaderAndContent
       footer={<PrimaryButton label="Start Day" onClick={onStart} />}
-    />
+    >
+  <div />
+</ScreenLayout>
   );
 }

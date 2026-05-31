@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Foghorn</string>
+    <string name="title_activity_main">Foghorn</string>
+    <string name="package_name">com.tybie.foghorn</string>
+    <string name="custom_url_scheme">com.tybie.foghorn</string>
+</resources>
