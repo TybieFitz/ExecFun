@@ -1,35 +1,11 @@
 export type Screen =
   | "welcome"
-  | "pain"
-  | "mood"
-  | "energy"
-  | "agenda"
   | "tasks"
   | "playlist"
   | "task"
-  | "bioBreak"
-  | "beginNext"
+  | "checkIn"
   | "agendaComplete"
   | "review";
-
-export const BIO_BREAK_OPTIONS = [
-  "Hydrate",
-  "Stretch",
-  "Bathroom",
-  "Snack",
-  "Rest",
-  "Breathe deeply",
-] as const;
-
-export type BioBreakOption = (typeof BIO_BREAK_OPTIONS)[number];
-
-export type BioBreakChecks = Record<BioBreakOption, boolean>;
-
-export function initialBioBreakChecks(): BioBreakChecks {
-  return Object.fromEntries(
-    BIO_BREAK_OPTIONS.map((o) => [o, false]),
-  ) as BioBreakChecks;
-}
 
 export type TaskId = "laundry" | "dishes" | "declutter" | "adulting";
 
@@ -45,12 +21,6 @@ export const PLAYLIST_ORDER: TaskId[] = [
   "dishes",
   "declutter",
 ];
-
-export type DayState = {
-  pain: number;
-  mood: number;
-  energy: number;
-};
 
 export type TaskQuantities = Record<TaskId, number>;
 

@@ -9,6 +9,8 @@ import {
 } from "../data/taskChecklists";
 import type { TaskId } from "../types";
 
+const TRANSITION_MS = 800;
+
 type TaskScreenProps = {
   title: string;
   taskId: TaskId;
@@ -32,7 +34,7 @@ export function TaskScreen({
     action();
     setSkipConfirming(false);
     setMessage(text);
-    window.setTimeout(() => onComplete(), 1000);
+    window.setTimeout(() => onComplete(), TRANSITION_MS);
   }
 
   function toggleCheck(id: string) {
@@ -40,34 +42,16 @@ export function TaskScreen({
   }
 
   let footer = null;
-  if (!message) {
-    if (skipConfirming) {
-      footer = (
-        <div className="flex flex-col gap-3">
-          <SecondaryButton
-            label="Cancel"
-            onClick={() => setSkipConfirming(false)}
-          />
-          <button
-            type="button"
-            onClick={() => finish(onSkip, "Event skipped")}
-            className="w-full rounded-xl border border-stone-500/35 bg-stone-950/40 px-6 py-4 text-lg font-medium text-stone-200 transition-colors duration-200 hover:border-stone-400/40 hover:bg-stone-950/55 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-500/60"
-          >
-            Skip Task
-          </button>
-        </div>
-      );
-    } else {
-      footer = (
-        <div className="flex flex-col gap-3">
-          <SecondaryButton label="Skip" onClick={() => setSkipConfirming(true)} />
-          <PrimaryButton
-            label="Done"
-            onClick={() => finish(onDone, "Completed.")}
-          />
-        </div>
-      );
-    }
+  if (!message && !skipConfirming) {
+    footer = (
+      <div className="flex flex-col gap-3">
+        <SecondaryButton label="Skip" onClick={() => setSkipConfirming(true)} />
+        <PrimaryButton
+          label="Done"
+          onClick={() => finish(onDone, "Completed.")}
+        />
+      </div>
+    );
   }
 
   const confirmTone =
@@ -83,11 +67,30 @@ export function TaskScreen({
       rootClassName={confirmTone}
     >
       {message ? (
-        <p className="text-lg text-text-muted">{message}</p>
+        <div className="flex flex-1 items-center justify-center">
+          <p className="text-center text-2xl text-text-muted sm:text-3xl">
+            {message}
+          </p>
+        </div>
       ) : skipConfirming ? (
-        <p className="max-w-sm py-2 text-lg leading-relaxed tracking-wide text-text/85">
-          Skip this task?
-        </p>
+        <div className="flex flex-1 flex-col items-center justify-center gap-10 px-2">
+          <p className="max-w-sm text-center text-xl leading-relaxed text-text/90 sm:text-2xl">
+            Skip this task?
+          </p>
+          <div className="flex w-full max-w-sm flex-col gap-3">
+            <SecondaryButton
+              label="Cancel"
+              onClick={() => setSkipConfirming(false)}
+            />
+            <button
+              type="button"
+              onClick={() => finish(onSkip, "Event skipped")}
+              className="w-full rounded-xl border border-stone-500/35 bg-stone-950/40 px-6 py-4 text-lg font-medium text-stone-200 transition-colors duration-200 hover:border-stone-400/40 hover:bg-stone-950/55 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-500/60"
+            >
+              Skip Task
+            </button>
+          </div>
+        </div>
       ) : (
         <TaskChecklist
           root={TASK_CHECKLISTS[taskId]}
