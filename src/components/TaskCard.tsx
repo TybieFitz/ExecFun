@@ -31,7 +31,7 @@ export function TaskCard({
 
       <div className="flex items-center gap-3">
         <StepButton
-          label="−"
+          label="-"
           onClick={onDecrease}
           disabled={quantity <= 0}
           className="h-8 w-8 text-xl"

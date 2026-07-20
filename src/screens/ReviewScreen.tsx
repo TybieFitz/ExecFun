@@ -54,7 +54,7 @@ export function ReviewScreen({
                   className="w-8 shrink-0 text-center text-xl leading-none"
                   aria-hidden="true"
                 >
-                  {status === "completed" ? "✔" : status === "skipped" ? "—" : ""}
+                  {status === "completed" ? "✓" : status === "skipped" ? "-" : ""}
                 </span>
                 <span className="min-w-0 flex-1 text-left">{item.label}</span>
               </li>

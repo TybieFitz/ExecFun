@@ -14,7 +14,10 @@ export type ChecklistCategoryNode = {
   children: Array<ChecklistSectionNode | ChecklistItemNode>;
 };
 
-export type ChecklistNode = ChecklistCategoryNode | ChecklistSectionNode | ChecklistItemNode;
+export type ChecklistNode =
+  | ChecklistCategoryNode
+  | ChecklistSectionNode
+  | ChecklistItemNode;
 
 function item(id: string, label: string): ChecklistItemNode {
   return { kind: "item", id, label };
@@ -34,26 +37,29 @@ function category(
   return { kind: "category", label, children };
 }
 
-const LAUNDRY = category(" ", [
-  section("Dryer", [
-    item("laundry.dryer.stale", "STALE → Run dryer refresh"),
-    item("laundry.dryer.fresh", "FRESH → empty to hamper, move to bed"),
-  ]),
+const LAUNDRY_WASH = category(" ", [
   section("Collect", [
-    item("laundry.collect.clothes", "Clothes - discard zones, reuse stations"),
-    item("laundry.collect.towels", "Towels - racks, kitchen"),
-    item("laundry.collect.sheets", "Sheets"),
+    item("laundryWash.collect.clothes", "Clothes - discard zones, reuse stations"),
+    item("laundryWash.collect.towels", "Towels - racks, kitchen"),
+    item("laundryWash.collect.sheets", "Sheets"),
   ]),
   section("Washer", [
-    item("laundry.washer.empty", "EMPTY → add pod + dirties, start"),
-    item("laundry.washer.clean", "CLEAN → transfer to dryer"),
-    item("laundry.washer.sour", "SOUR → add pod, restart"),
+    item("laundryWash.washer.empty", "EMPTY -> add pod + dirties, start"),
+    item("laundryWash.washer.clean", "CLEAN -> transfer to dryer"),
+    item("laundryWash.washer.sour", "SOUR -> add pod, restart"),
+  ]),
+]);
+
+const LAUNDRY_DRY = category(" ", [
+  section("Dryer", [
+    item("laundryDry.dryer.stale", "STALE -> Run dryer refresh"),
+    item("laundryDry.dryer.fresh", "FRESH -> empty to hamper, move to bed"),
   ]),
   section("Folding", [
-    item("laundry.folding.dump", "Dump onto unfolded sheet"),
-    item("laundry.folding.sort", "Sort"),
-    item("laundry.folding.fold", "Fold + hangerize"),
-    item("laundry.folding.putaway", "Put away"),
+    item("laundryDry.folding.dump", "Dump onto unfolded sheet"),
+    item("laundryDry.folding.sort", "Sort"),
+    item("laundryDry.folding.fold", "Fold + hangerize"),
+    item("laundryDry.folding.putaway", "Put away"),
   ]),
 ]);
 
@@ -69,6 +75,17 @@ const DISHES = category(" ", [
   section("CLEAR", [
     item("dishes.clear.stack", "Stack remaining dishes into left sink"),
   ]),
+]);
+
+const HOUSE = category(" ", [
+  item("house.prepare", "Gather tools/materials"),
+  item("house.clear", "Clear the work area"),
+  item("house.work", "Do the next visible step"),
+  item("house.cleanup", "Clean up or stage remaining parts"),
+]);
+
+const DIRTIES = category(" ", [
+  item("dirties.done", "Done"),
 ]);
 
 const DECLUTTER = category(" ", [
@@ -110,7 +127,10 @@ const ADULTING = category(" ", [
 ]);
 
 export const TASK_CHECKLISTS: Record<TaskId, ChecklistCategoryNode> = {
-  laundry: LAUNDRY,
+  laundryWash: LAUNDRY_WASH,
+  laundryDry: LAUNDRY_DRY,
+  house: HOUSE,
+  dirties: DIRTIES,
   dishes: DISHES,
   declutter: DECLUTTER,
   adulting: ADULTING,

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useProgress } from "../context/ProgressContext";
 import { useRequestExit } from "../context/ExitContext";
 
 type ScreenLayoutProps = {
@@ -14,7 +15,7 @@ type ScreenLayoutProps = {
   centerHeaderAndContent?: boolean;
   /** Optional override for title typography (Welcome only). */
   titleClassName?: string;
-  /** Vertically center main content above the footer (task menu). */
+  /** Center compact main content while preserving top scroll for taller content. */
   centerMainContent?: boolean;
 };
 
@@ -30,6 +31,8 @@ export function ScreenLayout({
   centerMainContent = false,
 }: ScreenLayoutProps) {
   const requestExit = useRequestExit();
+  const progress = useProgress();
+  const progressWidth = `${Math.round(Math.max(0, Math.min(1, progress ?? 0)) * 100)}%`;
 
   const header = (
     <header className="relative mb-6 shrink-0">
@@ -40,7 +43,7 @@ export function ScreenLayout({
           onClick={requestExit}
           className="absolute right-0 top-0 flex h-8 w-8 items-center justify-center rounded-lg text-lg leading-none text-text-muted transition-colors hover:bg-surface-raised hover:text-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          ×
+          X
         </button>
       )}
       <h1
@@ -59,13 +62,17 @@ export function ScreenLayout({
         centerHeaderAndContent
           ? "shrink-0"
           : centerMainContent
-            ? "min-h-0 flex-1 overflow-y-auto justify-center"
+            ? "min-h-0 flex-1 overflow-y-auto"
             : `min-h-0 flex-1 overflow-y-auto ${
                 align === "start" ? "justify-start" : "justify-end"
               }`
       }`}
     >
-      {children}
+      {centerMainContent && !centerHeaderAndContent ? (
+        <div className="my-auto">{children}</div>
+      ) : (
+        children
+      )}
     </main>
   );
 
@@ -73,6 +80,14 @@ export function ScreenLayout({
     <div
       className={`screen-enter flex h-[100dvh] flex-col overflow-hidden px-6 pt-8 sm:px-8 ${rootClassName}`}
     >
+      {progress !== null && (
+        <div className="-mx-6 -mt-8 mb-5 h-1 bg-border/60 sm:-mx-8">
+          <div
+            className="h-full bg-sky-300 transition-[width] duration-300 ease-out"
+            style={{ width: progressWidth }}
+          />
+        </div>
+      )}
       {centerHeaderAndContent ? (
         <div className="flex min-h-0 flex-1 flex-col justify-center">
           {header}
