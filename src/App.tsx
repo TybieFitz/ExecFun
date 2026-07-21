@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useInstallPrompt } from "./hooks/useInstallPrompt";
 import { useWakeLock } from "./hooks/useWakeLock";
 import { AppShell } from "./components/AppShell";
 import { ConfirmationDialog } from "./components/ConfirmationDialog";
@@ -55,6 +56,7 @@ function freshRoutine(id: RoutineId): RoutineState {
 
 export default function App() {
   useWakeLock();
+  const installPrompt = useInstallPrompt();
 
   const [screen, setScreen] = useState<Screen>("menu");
   const [lastAgendaScreen, setLastAgendaScreen] =
@@ -414,6 +416,8 @@ export default function App() {
           onAgenda={handleAgendaClick}
           onEvening={() => handleRoutineClick("evening")}
           onNewDay={() => setDialog("newDay")}
+          canInstall={installPrompt.canInstall}
+          onInstall={installPrompt.install}
         />
       );
       break;

@@ -13,6 +13,8 @@ type MainMenuScreenProps = {
   onAgenda: () => void;
   onEvening: () => void;
   onNewDay: () => void;
+  canInstall?: boolean;
+  onInstall?: () => void;
 };
 
 function MenuButton({
@@ -72,13 +74,22 @@ export function MainMenuScreen({
   onAgenda,
   onEvening,
   onNewDay,
+  canInstall = false,
+  onInstall,
 }: MainMenuScreenProps) {
   return (
     <ScreenLayout
       title="Foghorn"
       showExit={false}
       centerMainContent
-      footer={<SecondaryButton label="New Day" onClick={onNewDay} />}
+      footer={
+        <div className="flex flex-col gap-3">
+          {canInstall && onInstall && (
+            <SecondaryButton label="Install Foghorn" onClick={onInstall} />
+          )}
+          <SecondaryButton label="New Day" onClick={onNewDay} />
+        </div>
+      }
     >
       <div className="flex flex-col gap-3">
         <MenuButton
