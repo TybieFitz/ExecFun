@@ -78,10 +78,10 @@ export function ScreenLayout({
 
   return (
     <div
-      className={`screen-enter flex h-[100dvh] flex-col overflow-hidden px-6 pt-8 sm:px-8 ${rootClassName}`}
+      className={`screen-enter flex h-full min-h-0 flex-col overflow-hidden px-6 pt-[calc(1.5rem+env(safe-area-inset-top))] sm:px-8 ${rootClassName}`}
     >
       {progress !== null && (
-        <div className="-mx-6 -mt-8 mb-5 h-1 bg-border/60 sm:-mx-8">
+        <div className="-mx-6 -mt-[calc(1.5rem+env(safe-area-inset-top))] mb-5 h-1 bg-border/60 sm:-mx-8">
           <div
             className="h-full bg-sky-300 transition-[width] duration-300 ease-out"
             style={{ width: progressWidth }}
@@ -101,7 +101,7 @@ export function ScreenLayout({
       )}
 
       {footer && (
-        <footer className="-mx-6 shrink-0 border-t border-border bg-surface/95 px-6 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] backdrop-blur sm:-mx-8 sm:px-8">
+        <footer className="-mx-6 shrink-0 border-t border-border bg-surface/95 px-6 pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))] backdrop-blur sm:-mx-8 sm:px-8">
           {footer}
         </footer>
       )}

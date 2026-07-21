@@ -14,6 +14,7 @@ html,
 body,
 #root {
   height: 100%;
+  overflow: hidden;
 }
 
 html {
@@ -22,6 +23,9 @@ html {
 
 body {
   margin: 0;
+  position: fixed;
+  inset: 0;
+  width: 100%;
   font-family:
     system-ui,
     -apple-system,
