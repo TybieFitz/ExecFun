@@ -101,7 +101,7 @@ export function ScreenLayout({
       )}
 
       {footer && (
-        <footer className="-mx-6 shrink-0 border-t border-border bg-background/95 px-6 pt-4 pb-10 backdrop-blur sm:-mx-8 sm:px-8">
+        <footer className="-mx-6 shrink-0 border-t border-border bg-surface/95 px-6 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] backdrop-blur sm:-mx-8 sm:px-8">
           {footer}
         </footer>
       )}

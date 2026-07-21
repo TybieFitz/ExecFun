@@ -16,6 +16,10 @@ body,
   height: 100%;
 }
 
+html {
+  background: #0d1118;
+}
+
 body {
   margin: 0;
   font-family:
@@ -27,6 +31,15 @@ body {
   background-color: var(--color-surface);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
 }
 
 @keyframes fade-in {
