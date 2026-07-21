@@ -1,28 +1,86 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
 
-const worker = `const INDEX_PATH = "/index.html";
+const distDir = "dist";
+const textTypes = new Set([".html", ".css", ".js", ".json", ".svg", ".txt"]);
+const contentTypes = new Map([
+  [".html", "text/html; charset=utf-8"],
+  [".css", "text/css; charset=utf-8"],
+  [".js", "text/javascript; charset=utf-8"],
+  [".json", "application/json; charset=utf-8"],
+  [".png", "image/png"],
+  [".svg", "image/svg+xml; charset=utf-8"],
+  [".webp", "image/webp"],
+]);
 
-function withUrlPath(request, pathname) {
-  const url = new URL(request.url);
-  url.pathname = pathname;
-  url.search = "";
-  return new Request(url, request);
+async function collectFiles(dir) {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files = [];
+
+  for (const entry of entries) {
+    if (entry.name === "server") {
+      continue;
+    }
+
+    const fullPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      files.push(...await collectFiles(fullPath));
+    } else {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+
+const files = await collectFiles(distDir);
+const assets = {};
+
+for (const file of files) {
+  const route = `/${path.relative(distDir, file).replaceAll(path.sep, "/")}`;
+  const extension = path.extname(file);
+  const contentType = contentTypes.get(extension) || "application/octet-stream";
+
+  assets[route] = textTypes.has(extension)
+    ? { contentType, encoding: "text", body: await readFile(file, "utf8") }
+    : { contentType, encoding: "base64", body: (await readFile(file)).toString("base64") };
+}
+
+const worker = `const ASSETS = ${JSON.stringify(assets)};
+
+function decodeBase64(value) {
+  const binary = atob(value);
+  const bytes = new Uint8Array(binary.length);
+
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+
+  return bytes;
+}
+
+function responseFor(asset) {
+  const body = asset.encoding === "base64" ? decodeBase64(asset.body) : asset.body;
+
+  return new Response(body, {
+    headers: {
+      "content-type": asset.contentType,
+      "cache-control": "public, max-age=31536000, immutable",
+    },
+  });
 }
 
 export default {
-  async fetch(request, env) {
-    const response = await env.ASSETS.fetch(request);
+  async fetch(request) {
+    const url = new URL(request.url);
+    const asset = ASSETS[url.pathname] || (url.pathname === "/" ? ASSETS["/index.html"] : null);
 
-    if (response.status !== 404) {
-      return response;
+    if (asset) {
+      return responseFor(asset);
     }
 
-    const accept = request.headers.get("accept") || "";
-    if (request.method === "GET" && accept.includes("text/html")) {
-      return env.ASSETS.fetch(withUrlPath(request, INDEX_PATH));
-    }
-
-    return response;
+    return new Response("Not found", { status: 404 });
   },
 };
 `;
