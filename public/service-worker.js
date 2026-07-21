@@ -1,10 +1,10 @@
 const CACHE_NAME = "foghorn-shell-v2";
 const SHELL_ASSETS = [
-  "/",
-  "/index.html",
-  "/manifest.webmanifest",
-  "/icon-192.png",
-  "/icon-512.png",
+  "./",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./icon-192.png",
+  "./icon-512.png",
 ];
 
 self.addEventListener("install", (event) => {
@@ -39,6 +39,6 @@ self.addEventListener("fetch", (event) => {
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
         return response;
       })
-      .catch(() => caches.match(event.request).then((cached) => cached || caches.match("/"))),
+      .catch(() => caches.match(event.request).then((cached) => cached || caches.match("./"))),
   );
 });
